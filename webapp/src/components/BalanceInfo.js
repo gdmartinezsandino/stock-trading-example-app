@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { TradingContext } from "../context/TradingProvider";
+import { TradingContext } from '../context/TradingProvider';
 
 const Container = styled.div`
   display: grid;
@@ -13,14 +13,33 @@ const ContainerBalance = styled.div`
     color: #969697;
     font-size: 14px;
     margin-bottom: 4px;
-    font-family: "Poppins", serif;
+    font-family: 'Poppins', serif;
   }
 
   p {
     color: #000000;
     font-size: 26px;
     margin: 0;
-    font-family: "Poppins", serif;
+    font-family: 'Poppins', serif;
+  }
+`;
+
+const ContainerShares = styled.div`
+  grid-column: 1 / -1;
+  margin-top: 8px;
+
+  h3 {
+    color: #969697;
+    font-size: 14px;
+    margin-bottom: 4px;
+    font-family: 'Poppins', serif;
+  }
+
+  p {
+    color: #000000;
+    font-size: 26px;
+    margin: 0;
+    font-family: 'Poppins', serif;
   }
 `;
 
@@ -35,7 +54,7 @@ const ContainerPrice = styled.div`
     grid-row: 1;
     grid-column: 1 / -1;
     color: #969697;
-    font-family: "Poppins", serif;
+    font-family: 'Poppins', serif;
     font-size: 14px;
     margin-bottom: 4px;
   }
@@ -44,7 +63,7 @@ const ContainerPrice = styled.div`
     grid-row: 2;
     grid-column: 1;
     color: #000000;
-    font-family: "Poppins", serif;
+    font-family: 'Poppins', serif;
     font-size: 26px;
     margin: 0;
   }
@@ -60,7 +79,7 @@ const PriceIndicatorIncrease = styled.div`
   border-radius: 4px;
   background-color: #89F67D;
   color: #000000;
-  font-family: "Poppins", serif;
+  font-family: 'Poppins', serif;
 `;
 
 const PriceIndicatorDecrease = styled.div`
@@ -68,14 +87,14 @@ const PriceIndicatorDecrease = styled.div`
   border-radius: 4px;
   background-color: #FB354F;
   color: #000000;
-  font-family: "Poppins", serif;
+  font-family: 'Poppins', serif;
 `;
 
 const BalanceInfo = () => {
   const { balance, price, shares, priceHistory } = useContext(TradingContext);
 
   const prevPrice = priceHistory.length > 1 ? priceHistory[priceHistory.length - 2].price : null;
-  const priceChange = prevPrice !== null ? (price > prevPrice ? "up" : price < prevPrice ? "down" : null) : null;
+  const priceChange = prevPrice !== null ? (price > prevPrice ? 'up' : price < prevPrice ? 'down' : null) : null;
 
   return (
     <Container>
@@ -88,10 +107,15 @@ const BalanceInfo = () => {
         <h3>Current Price</h3>
         <p>${Number(price || 0).toFixed(2)}</p>
         <span>
-          {priceChange === "up" && <PriceIndicatorIncrease>📈 Up</PriceIndicatorIncrease>}
-          {priceChange === "down" && <PriceIndicatorDecrease>📉 Down</PriceIndicatorDecrease>}
+          {priceChange === 'up' && <PriceIndicatorIncrease>📈 Up</PriceIndicatorIncrease>}
+          {priceChange === 'down' && <PriceIndicatorDecrease>📉 Down</PriceIndicatorDecrease>}
         </span>
       </ContainerPrice>
+
+      <ContainerShares>
+        <h3>Shares</h3>
+        <p>{Number(shares)}</p>
+      </ContainerShares>
     </Container>
   );
 };

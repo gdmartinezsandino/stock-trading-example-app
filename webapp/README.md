@@ -1,70 +1,151 @@
-# Getting Started with Create React App
+# Real-Time Stock Trading Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📌 Project Overview
+This is a full-stack real-time stock trading application that allows users to buy and sell stocks, track their balance and shares, and view real-time stock price updates.
 
-## Available Scripts
+### **Tech Stack**
+- **Frontend:** React (Dockerized, running on port 8080 with Nginx as a reverse proxy)
+- **Backend:** Node.js with Express.js and Socket.IO
+- **Database:** MongoDB
+- **Authentication:** JWT
+- **State Management:** Context API
+- **Testing:** Jest & React Testing Library
+- **DevOps & CI/CD:** Docker & Docker Compose
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Getting Started
+### **1. Prerequisites**
+Ensure you have the following installed on your machine:
+- **Docker** & **Docker Compose**
+- **Node.js v18+** (if running locally without Docker)
+- **MongoDB** (if running locally without Docker)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### **2. Clone the Repository**
+```sh
+git clone https://github.com/gdmartinezsandino/stock-trading-example-app
+cd stock-trading-example-app
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### **3. Environment Variables**
+Create a `.env` file in the root directory and add the following variables:
+```env
+# Server Configuration
+MONGO_URI=mongodb://database:27017/stock-trading-example-app
+JWT_SECRET=trading_secret
+PORT=3000
+```
 
-### `npm test`
+For local development, adjust `MONGO_URI` to your local MongoDB instance.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### **4. Running the Project with Docker**
+To start the application with **Docker Compose**, run:
+```sh
+docker-compose up --build
+```
+This will:
+- Start the **backend** on port `3000`
+- Start the **frontend** on port `8080`
+- Start the **MongoDB** container
 
-### `npm run build`
+### Initial credentials
+email: admin@example.com
+password: password123
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **5. Running Locally Without Docker**
+If you want to run the project locally:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### **Start MongoDB** 
+```sh
+mongod --dbpath /path/to/db
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### **Start Backend**
+```sh
+cd server
+npm install
+npm start
+```
+The backend will run on `http://localhost:3000`
 
-### `npm run eject`
+#### **Start Frontend**
+```sh
+cd webapp
+npm install
+npm start
+```
+The webapp will run on `http://localhost:8080`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📡 API Endpoints
+### **Authentication**
+| Method | Endpoint | Description |
+|--------|-------------|-------------|
+| POST   | `/api/user/login` | User login |
+| GET    | `/api/user/me` | Get user details (Auth required) |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### **Trading**
+| Method | Endpoint | Description |
+|--------|-------------|-------------|
+| POST   | `/api/trades` | Create a new trade (buy/sell) |
+| GET    | `/api/trades` | Get all user trades |
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### **WebSockets**
+- **Subscribe to Stock Updates:** `ws://localhost/socket.io`
+- **Events:**
+  - `stock:update` → Receives real-time stock price changes
+  - `trade:update` → Receives trade updates
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🏗 Project Structure
+```
+stock-trading-example-app/
+│── server/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── index.js
+│   └── Dockerfile
+│
+│── webapp/
+│   ├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── context/
+│   ├── App.js
+│   ├── index.js
+│   └── Dockerfile
+│
+│── docker-compose.yml
+│── .env
+│── README.md
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🛠 Development & Debugging
+### **Checking Logs**
+To view logs from running containers:
+```sh
+docker-compose logs -f
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### **Stopping the App**
+```sh
+docker-compose down
+```
 
-### Analyzing the Bundle Size
+### **Running Backend Tests**
+```sh
+cd server
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### **Running Frontend Tests**
+```sh
+cd webapp
+npm test
+```

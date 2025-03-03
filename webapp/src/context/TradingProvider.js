@@ -12,19 +12,17 @@ const TradingProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('http://localhost/api/user/login', {
+      const request = await fetch('http://localhost/api/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
   
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Login failed');
+      const response = await request.json();
+      if (!request.ok) throw new Error(response.message || 'Login failed');
   
-      localStorage.setItem('token', data.token);
-      setToken(data.token);
-  
-      // ✅ Fetch user balance & shares after login
+      localStorage.setItem('token', response.token);
+      setToken(response.token);
       fetchUserData();
     } catch (error) {
       console.error('Login error: ', error.message);
@@ -40,16 +38,16 @@ const TradingProvider = ({ children }) => {
     if (!token) return;
     
     try {
-      const response = await fetch('http://localhost/api/user/me', {
+      const request = await fetch('http://localhost/api/user/me', {
         method: 'GET',
         headers: { 'Authorization': `Bearer ${token}` }
       });
   
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Failed to fetch user data');
-  
-      setBalance(data.balance);
-      setShares(data.shares);
+      const response = await request.json();
+      if (!response.ok) throw new Error(response.message || 'Failed to fetch user data');
+
+      setBalance(response.user.balance);
+      setShares(response.user.shares);
     } catch (error) {
       console.error('User data fetch error:', error.message);
     }
@@ -105,9 +103,6 @@ const TradingProvider = ({ children }) => {
       socket.disconnect();
     };
   }, []);
-  
-  
-  
 
   return (
     <TradingContext.Provider value={{ token, login, logout, price, balance, shares, priceHistory, tradeStock }}>
