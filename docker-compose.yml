@@ -17,7 +17,7 @@ services:
       - app_network
 
   api:
-    build: ./server
+    build: ./api
     container_name: api
     restart: always
     ports:
